@@ -3,7 +3,7 @@ using System;
 namespace CalculatorApp
 {
     /// <summary>
-    /// Предоставляет статические методы для выполнения основных математических операций.
+    [cite_start]/// Предоставляет статические методы для выполнения основных математических операций[cite: 231].
     /// </summary>
     public class Calculator
     {
@@ -45,21 +45,29 @@ namespace CalculatorApp
         /// </summary>
         /// <param name="a">Делимое.</param>
         /// <param name="b">Делитель.</param>
-        /// <returns>Результат деления. Возвращает Double.NaN, если делитель равен нулю.</returns>
+        /// <returns>Результат деления. [cite_start]Возвращает Double.NaN, если делитель равен нулю[cite: 198].</returns>
         public static double Divide(double a, double b)
         {
-            // Исправление Issue #1: Добавлена проверка деления на ноль
+            // Исправление Issue #1: Добавлена проверка деления на ноль.
             if (b == 0)
             {
-                // Для double деление на 0 обычно дает Infinity, но мы можем явно вернуть NaN 
-                // или бросить исключение, если того требует логика. 
-                // Здесь возвращаем NaN, чтобы избежать падения программы.
+                // Возвращаем Not-a-Number (NaN) для корректной обработки в Main.
                 return double.NaN; 
             }
             return a / b;
         }
         
-         // Отсутствует функция возведения в степень (Feature Issue #2)
+        /// <summary>
+        /// Выполняет возведение числа в указанную степень.
+        /// </summary>
+        /// <param name="base">Основание (число, которое возводят в степень).</param>
+        /// <param name="exponent">Показатель степени.</param>
+        [cite_start]/// <returns>Результат возведения числа в степень[cite: 209, 211].</returns>
+        public static double Power(double @base, double exponent)
+        {
+            // Реализация Issue #2.
+            return Math.Pow(@base, exponent);
+        }
     }
     
     class Program
@@ -68,16 +76,17 @@ namespace CalculatorApp
         {
             Console.WriteLine("Калькулятор C#");
             
-            // Тестирование функций
+            // Тестирование функции сложения
             Console.WriteLine($"5 + 3 = {Calculator.Add(5, 3)}");
 
-            // Обработка потенциальных ошибок (для Divide)
+            // Тестирование деления с обработкой исключений (Issue #1 Fix)
             try
             {
                 double result = Calculator.Divide(10, 0);
                 if (double.IsNaN(result))
                 {
-                     Console.WriteLine($"10 / 0 = Деление на ноль невозможно.");
+                     // Вывод сообщения об ошибке, как требовалось в Issue #1.
+                     [cite_start]Console.WriteLine($"10 / 0 = Деление на ноль невозможно[cite: 198].");
                 }
                 else
                 {
@@ -86,9 +95,13 @@ namespace CalculatorApp
             }
             catch (Exception ex)
             {
-                // Общий блок обработки исключений, если бы метод Divide бросал исключение.
-                Console.WriteLine($"Произошла ошибка: {ex.Message}");
+                // Блок для обработки непредвиденных исключений.
+                Console.WriteLine($"Произошла непредвиденная ошибка: {ex.Message}");
             }
+            
+            // Тестирование новой функции возведения в степень (Issue #2)
+            Console.WriteLine($"2 в степени 4 = {Calculator.Power(2, 4)}");
+            Console.WriteLine($"3 в степени 3 = {Calculator.Power(3, 3)}");
         }
     }
 }
